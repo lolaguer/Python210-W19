@@ -63,6 +63,17 @@ print (f"The weight of an {item[0][:-1].upper()} is {item[1]*1.2} and the weight
 
 
 
-#########################
-print ('## Task Five ##')
-#########################
+########################
+print ('## Task Six ##')
+########################
+
+header = "Name, Age, Cost"
+p1 = 1, "Bob Smith", "23", "100"
+p2 = 2, "Sue Jones", "45", "100000"
+
+table = p1, p2
+
+form_string = '{:20}, {:.0f}, {:8}'
+
+for row in table:
+    print (form_string.format(*row))  # Need to finish it
