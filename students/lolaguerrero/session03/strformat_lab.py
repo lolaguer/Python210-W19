@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # ----------------------------------#
-# Assignment: strformat_lab.pypy
+# Assignment: strformat_lab.py
 # Author: Lola Guerrero
 # RRoot, 01/29/2019, Created file
 # ----------------------------------#
