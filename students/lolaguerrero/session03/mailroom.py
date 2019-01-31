@@ -11,8 +11,9 @@
 
 import sys
 
+# Data #
 # Donors table
-header = "Name, Donation"
+header = "Name, Donation" # Not use but helps to understand the data in our table
 p1 = "Bob Smith", [25, 100, 50]
 p2 = "Sue Jones", [750],
 p3 = "Frankie Addams", [10, 10, 10]
@@ -30,7 +31,11 @@ prompt = "\n".join(("Please choose from below options:",
           ">>> "))
 
 
+# Preprocessing #
 def donor_names(donors):
+
+    """ Return the complete list of donors """
+
     d_names = []
     for row in donors:
         name = row[0]
@@ -39,7 +44,10 @@ def donor_names(donors):
 
 
 def donation_amount(name):
-    donor_amount = int(input("How much money is the donor given?: ").title())
+
+    """ Return a donor donation amount """
+
+    donor_amount = int(input("How much money is the donor given?: "))
     for row in donors_table:
         if name == row[0]:
             row[1].append(donor_amount)
@@ -48,14 +56,15 @@ def donation_amount(name):
 
 def select_a_donor():
 
-    """ Return a donor Full Name"""
+    """ Return a donor Full Name """
+
     donor_name = input("Please type the donor full name: ").title()
 
     if donor_name.lower() == 'list':
         print ('Here is the list of the donor names:\n')
         print (donor_names(donors_table), '\n')
     else:
-        if donor_name.lower().split() not in donor_names(donors_table):
+        if donor_name not in donor_names(donors_table):
             new_donor = (donor_name, [])
             donors_table.append(new_donor)
             return donor_name
@@ -69,7 +78,8 @@ def send_tank_you():
         return prompt
     else:
         amount = donation_amount(name)
-        print ("Dear {}, '\n' We really aprreciate your support donating to us the amount of {}".format(name, amount))
+        print (f"Dear {name}," + "\n" + f"We really appreciate your support donating to us the amount of ${amount}." + "\n" + "Thank you!!")
+        print ("\n")
     return prompt
 
 
@@ -80,17 +90,17 @@ def exit_program():
 
 def main():
     while True:
-        response = input(prompt)  # continuously collect user selection
-        # now redirect to feature functions based on the user selection
+        response = input(prompt)
         if response == "1":
             send_tank_you()
         elif response == "2":
-            print ('For now only 1')
+            print ('For now only 1 is ready!')
         elif response == "3":
             exit_program()
         else:
             print("Not a valid option!")
 
 
+# Presentation #
 if __name__ == "__main__":
     main()
