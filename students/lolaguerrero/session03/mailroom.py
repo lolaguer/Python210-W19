@@ -30,44 +30,47 @@ prompt = "\n".join(("Please choose from below options:",
           ">>> "))
 
 
+def donor_names(donors):
+    d_names = []
+    for row in donors:
+        name = row[0]
+        d_names.append(name)
+    return d_names
 
 
-def send_tank_you():
+def donation_amount(name):
+    donor_amount = int(input("How much money is the donor given?: ").title())
+    for row in donors_table:
+        if name == row[0]:
+            row[1].append(donor_amount)
+    return donor_amount
+
+
+def select_a_donor():
 
     """ Return a donor Full Name"""
     donor_name = input("Please type the donor full name: ").title()
 
-    def sort_donor_last_name(donors):
-        """ Sort on the last name"""
-        print ('donor', donors)
-        return donors[0].split(" ")[1]
-
-    def donor_names(donors):
-        d_names = []
-        for row in donors:
-            name = row[1]
-            d_names.append(name)
-        return d_names
-
     if donor_name.lower() == 'list':
         print ('Here is the list of the donor names:\n')
         print (donor_names(donors_table), '\n')
-        #print (sorted(donors_table, key=sort_donor_last_name))
     else:
         if donor_name.lower().split() not in donor_names(donors_table):
             new_donor = (donor_name, [])
             donors_table.append(new_donor)
-            print (donors_table)
-    #     else:
-    #         return donor_name
+            return donor_name
+        else:
+            return donor_name
 
 
-def donation_amount():
-    if type(send_tank_you) == str:
-        donor_amount = int(input("How much money is the donor given?").title())
-    for row in donors_table:
-        if send_tank_you == row[1]:
-            row[2].append(donor_amount)
+def send_tank_you():
+    name = select_a_donor()
+    if name is None:
+        return prompt
+    else:
+        amount = donation_amount(name)
+        print ("Dear {}, '\n' We really aprreciate your support donating to us the amount of {}".format(name, amount))
+    return prompt
 
 
 def exit_program():
