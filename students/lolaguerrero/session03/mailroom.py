@@ -78,6 +78,7 @@ def send_tank_you():
 
 
 def sort_amt(donor):
+    """ Return the donor amount string ($XX.00) into an integer (XX) """
     return int(donor[1].replace('$', '').replace('.00', ''))
 
 
