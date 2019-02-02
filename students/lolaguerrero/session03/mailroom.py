@@ -60,9 +60,7 @@ def select_a_donor():
         if donor_name not in donor_names(donors_table):
             new_donor = (donor_name, [])
             donors_table.append(new_donor)
-            return donor_name
-        else:
-            return donor_name
+        return donor_name
 
 
 def send_tank_you():
