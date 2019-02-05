@@ -10,9 +10,6 @@
 
 import sys
 import random
-import string
-
-
 
 
 def read_in_data(file):
@@ -44,8 +41,6 @@ def build_trigrams(text):
     """
     trigrams = {}
 
-    #words = text.split()
-
     for i in range(len(words) - 2):
         pair = words[i:i + 2]
         follower = words[i + 2]
@@ -76,7 +71,7 @@ def build_text(word_pairs):
 
         text += ' ' + new_word
 
-    #text = ' '.join(w.capitalize() for w in text.split('. '))
+    text = ' '.join(w.capitalize() for w in text.split('. '))
 
     return text
 
