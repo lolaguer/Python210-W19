@@ -104,4 +104,7 @@ f_set = frozenset(("m", "a", "r", "a", "t", "h", "o", "n"))
 print (f_set)
 
 # Display the union and intersection of the two sets
+# Union
+print (s_python | f_set)
+# Intersection
 print (s_python & f_set)
