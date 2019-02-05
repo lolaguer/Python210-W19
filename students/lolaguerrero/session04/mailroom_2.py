@@ -21,17 +21,16 @@ p5 = "Angelica Brown", [100, 150, 75]
 donors_table = [p1, p2, p3, p4, p5]
 
 
-## Donors table to dict:
-donors_dict = {"Name":[], "Last_Name":[], "Donations":[]}
+## Donors list to dict:
+donors_dict = {}
+donor_indx = 1
 for i in range(len(donors_table)):
     name, last_name = donors_table[i][0].split()
     donation = donors_table[i][1]
-    donors_dict['Name'].append(name)
-    donors_dict['Last_Name'].append(last_name)
-    donors_dict['Donations'].append(donation)
+    donors_dict[donor_indx] = {'Name': name, 'Last_name': last_name, 'Donation': donation}
+    donor_indx += 1
 
-
-
+del donors_table
 
 prompt = "\n".join(("Please choose from below options:",
           "1 - Send a Thank You",
@@ -45,18 +44,21 @@ prompt = "\n".join(("Please choose from below options:",
 def donor_names(donors):
     """ Return the complete list of donors """
     d_names = []
-    for row in donors:
-        name = row[0]
-        d_names.append(name)
+    for i in range(1,len(donors)):
+        c_name = donors[i]['Name']+ ' ' + donors[i]['Last_name']
+        d_names.append(c_name)
     return d_names
 
 
 def donation_amount(name):
     """ Return a donor donation amount """
     donor_amount = int(input("How much money is the donor given?: "))
-    for row in donors_table:
-        if name == row[0]:
-            row[1].append(donor_amount)
+    name, last_name = name.split()
+    name = name.strip()
+    last_name = last_name.strip()
+    for i in range(1, len(donors_dict)+1):
+        if (name == donors_dict[i]['Name']) and (last_name == donors_dict[i]['Last_name']):
+            donors_dict[i]['Donation'].append(donor_amount)
     return donor_amount
 
 
@@ -66,12 +68,13 @@ def select_a_donor():
 
     if donor_name.lower() == 'list':
         print ('** Here is the list of the donor names:')
-        print (donor_names(donors_table))
+        print (donor_names(donors_dict))
         print('\n')
     else:
-        if donor_name not in donor_names(donors_table):
-            new_donor = (donor_name, [])
-            donors_table.append(new_donor)
+        if donor_name not in donor_names(donors_dict):
+            name, last_name = donor_name.split()
+            donor_indx = len(donors_dict) + 1
+            donors_dict[donor_indx ] = {'Name': name, 'Last_name': last_name, 'Donation': []}
         return donor_name
 
 
@@ -94,10 +97,13 @@ def sort_amt(donor):
 
 def create_report():
     summary_donnors_table = []
-    for i in range(len(donors_table)):
-        donors_name = donors_table[i][0]
-        total_donated = sum(donors_table[i][1])
-        number_donations = len(donors_table[i][1])
+    for i in range(1, len(donors_dict)+1):
+        print('#######')
+        print (donors_dict)
+        print (donors_dict[i])
+        donors_name = donors_dict[i]['Name']+ ' ' + donors_dict[i]['Last_name']
+        total_donated = sum(donors_dict[i]['Donation'])
+        number_donations = len(donors_dict[i]['Donation'])
         average_donation = total_donated / number_donations
         # Some formatting in the values
         total_donated = '$%.2f' % total_donated
@@ -120,7 +126,12 @@ def create_report():
     print (t)
 
 def send_letters():
-    print ('To-Do')
+    for i in range(1,len(donors_dict)+1):
+        c_name = donors_dict[i]['Name']+ ' ' + donors_dict[i]['Last_name']
+        total_donation = sum(donors_dict[i]['Donation'])
+        file = open('./thank_you_letters/' + c_name + '.txt', 'w')
+        text = f"Dear {c_name}," + "\n" + f"We really appreciate your support donating to us the total amount of ${total_donation}." + "\n" + "Thank you!!"
+        file.write(text)
 
 
 def exit_program():
