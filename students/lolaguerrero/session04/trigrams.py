@@ -102,33 +102,34 @@ def build_text(word_pairs):
     # First sentence
     text = " ".join(word_pair + (new_word,))
 
+    # Add new words based on the two previous ones.
     for _ in range(len(word_pairs)):
 
         try:
             word_pair = tuple(text.split()[-2:])
             new_word = random.choice(word_pairs[word_pair])
-        except KeyError as e:
+        except KeyError:
             word_pair = random.choice(list(word_pairs.keys()))
             new_word = random.choice(word_pairs[word_pair])
 
         text += ' ' + new_word
 
+    text = ' '.join('. '+ w.capitalize() for w in text.split('. '))
     text = text.replace(' i ', ' I ')
-    text = ' '.join(w.capitalize() for w in text.split('. '))
+    text = text.replace(' . ', '. ')
+    text = text[2:]+'.'
 
     return text
 
 
-
 if __name__ == "__main__":
 
-     try:
-         filename = sys.argv[1]
-     except IndexError:
-         print("You must pass in a filename")
-         sys.exit(1)
+    try:
+        filename = sys.argv[1]
+    except IndexError:
+        print("You must pass in a filename")
+        sys.exit(1)
 
-    #filename = '/Users/i22041/Documents/Python_Certification_UW/PYTHON210/Python210-W19/students/lolaguerrero/session04/sherlock_small.txt'
     in_data = read_in_data(filename)
     words = make_words(in_data)
     word_pairs = build_trigrams(words)
