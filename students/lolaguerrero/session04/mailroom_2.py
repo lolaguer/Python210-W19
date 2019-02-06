@@ -7,6 +7,7 @@
 # ----------------------------------#
 
 import sys
+from datetime import datetime
 from prettytable import PrettyTable
 
 # Data #
@@ -30,6 +31,7 @@ for i in range(len(donors_table)):
     donors_dict[donor_indx] = {'Name': name, 'Last_name': last_name, 'Donation': donation}
     donor_indx += 1
 
+# Delete the previous donors table
 del donors_table
 
 prompt = "\n".join(("Please choose from below options:",
@@ -42,7 +44,9 @@ prompt = "\n".join(("Please choose from below options:",
 
 # Preprocessing #
 def donor_names(donors):
-    """ Return the complete list of donors """
+    """
+    Returns the complete list of donors
+    """
     d_names = []
     for i in range(1,len(donors)):
         c_name = donors[i]['Name']+ ' ' + donors[i]['Last_name']
@@ -51,7 +55,9 @@ def donor_names(donors):
 
 
 def donation_amount(name):
-    """ Return a donor donation amount """
+    """
+    Returns a donor donation amount
+    """
     donor_amount = int(input("How much money is the donor given?: "))
     name, last_name = name.split()
     name = name.strip()
@@ -63,7 +69,9 @@ def donation_amount(name):
 
 
 def select_a_donor():
-    """ Return a donor Full Name """
+    """
+    Returns a donor Full Name
+    """
     donor_name = input("Please type the donor full name: ").title()
 
     if donor_name.lower() == 'list':
@@ -78,7 +86,11 @@ def select_a_donor():
         return donor_name
 
 
-def send_tank_you():
+def send_thank_you():
+    """
+    Writes a thank you note to the donor for his/her donation
+    """
+
     name = select_a_donor()
     if name is None:
         return prompt
@@ -91,11 +103,16 @@ def send_tank_you():
 
 
 def sort_amt(donor):
-    """ Return the donor amount string ($XX.00) into an integer (XX) """
+    """
+    Converts and returns the donor amount string ($XX.00) into an integer (XX)
+    """
     return int(donor[1].replace('$', '').replace('.00', ''))
 
 
 def create_report():
+    """
+    Creates a table with all the donors, number of donations, total and average donated amounts
+    """
     summary_donnors_table = []
     for i in range(1, len(donors_dict)+1):
         print('#######')
@@ -126,12 +143,17 @@ def create_report():
     print (t)
 
 def send_letters():
+    """
+    Creates a file with the thank you note for his/her total donation
+    """
     for i in range(1,len(donors_dict)+1):
         c_name = donors_dict[i]['Name']+ ' ' + donors_dict[i]['Last_name']
         total_donation = sum(donors_dict[i]['Donation'])
-        file = open('./thank_you_letters/' + c_name + '.txt', 'w')
+        date = datetime.now().strftime('%m_%d_%Y')
+        file = open('./thank_you_letters/' + c_name + '_' + date + '.txt', 'w')
         text = f"Dear {c_name}," + "\n" + f"We really appreciate your support donating to us the total amount of ${total_donation}." + "\n" + "Thank you!!"
         file.write(text)
+    print ('Letters saved\n')
 
 
 def exit_program():
@@ -140,7 +162,7 @@ def exit_program():
 
 
 
-arg_dict = {"1": send_tank_you,
+arg_dict = {"1": send_thank_you,
             "2": create_report,
             "3": send_letters,
             "4": exit_program}
