@@ -56,16 +56,24 @@ def donation_amount(name):
     """
     Returns a donor donation amount
     """
-    donor_amount = int(input("How much money is the donor given?: "))
-    name, last_name = name.split()
-    name = name.strip()
-    last_name = last_name.strip()
-    # Changing to comprehension list
-    [v['Donation'].append(donor_amount) for k, v in donors_dict.items()
-     if (name == v['Name']) and (last_name == v['Last_name'])]
-    return donor_amount
+    try:
+        donor_amount = int(input("How much money is the donor given?: "))
 
-#[v['Donation'].append(donor_amount) for k, v in donors_dict.items() if name == v['Name']) and last_name == v['Last_name'])]
+        if donor_amount < 0:
+            print("You can't donate negative quantities")
+            donation_amount(name)
+        else:
+            name, last_name = name.split()
+            name = name.strip()
+            last_name = last_name.strip()
+            # Changing to comprehension list
+            [v['Donation'].append(donor_amount) for v in donors_dict.values() if (name == v['Name']) and (last_name == v['Last_name'])]
+            print('Donation amount', donor_amount)
+            return donor_amount
+    except ValueError:
+        print ("That wasn't a correct amount. Try again.")
+        donation_amount(name)
+
 
 def select_a_donor():
     """
@@ -85,7 +93,7 @@ def select_a_donor():
                     donor_indx = len(donors_dict) + 1
                     donors_dict[donor_indx ] = {'Name': name, 'Last_name': last_name, 'Donation': []}
                 else:
-                    print('One of the names is a correct string. Please, provide a correct name.')
+                    print('One of the names is not a correct string. Please, provide a correct name.')
                     select_a_donor()
             except ValueError:
                 print ('Please, provide a complete name')
@@ -97,12 +105,12 @@ def send_thank_you():
     """
     Writes a thank you note to the donor for his/her donation
     """
-
     name = select_a_donor()
     if name is None:
         return prompt
     else:
         amount = donation_amount(name)
+        print ('Amount in  the tank you note', amount)
         print("\n")
         print (f"Dear {name}," + "\n" + f"We really appreciate your support donating to us the amount of ${amount}." + "\n" + "Thank you!!")
         print ("\n")
@@ -182,6 +190,12 @@ def main():
             response = input(prompt)
             arg_dict.get(response, 'Not a valid option!')()
         except FileNotFoundError:
+            response = input(prompt)
+            arg_dict.get(response, 'Not a valid option!')()
+        except EOFError:
+            response = input(prompt)
+            arg_dict.get(response, 'Not a valid option!')()
+        except KeyboardInterrupt:
             response = input(prompt)
             arg_dict.get(response, 'Not a valid option!')()
 
