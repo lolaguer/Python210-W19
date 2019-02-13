@@ -7,6 +7,7 @@
 # ----------------------------------#
 
 import sys
+import os
 from datetime import datetime
 from prettytable import PrettyTable
 
@@ -119,20 +120,14 @@ def create_report():
     """
     Creates a table with all the donors, number of donations, total and average donated amounts
     """
-    summary_donnors_table = []
-    for i in range(1, len(donors_dict)+1):
-        print('#######')
-        print (donors_dict)
-        print (donors_dict[i])
-        donors_name = donors_dict[i]['Name']+ ' ' + donors_dict[i]['Last_name']
-        total_donated = sum(donors_dict[i]['Donation'])
-        number_donations = len(donors_dict[i]['Donation'])
-        average_donation = total_donated / number_donations
-        # Some formatting in the values
-        total_donated = '$%.2f' % total_donated
-        average_donation = '$%.2f' % average_donation
-        donor_sum = (donors_name, total_donated, number_donations, average_donation)
-        summary_donnors_table.append(donor_sum)
+    # Changing to comprehension list
+    donors_name = [v['Name'] + ' ' + v['Last_name'] for v in donors_dict.values()]
+    total_donated = [sum(v['Donation']) for v in donors_dict.values()]
+    number_donations = [len(v['Donation']) for v in donors_dict.values()]
+    average_donation = [x / y for x, y in zip(total_donated, number_donations)]
+    total_donated = ['$%.2f' % t for t in total_donated]
+    average_donation = ['$%.2f' % n for n in average_donation]
+    summary_donnors_table = [(name, total, num, avg) for name, total, num, avg in zip(donors_name, total_donated, number_donations, average_donation)]
 
     sorted_table = sorted(summary_donnors_table, key=sort_amt, reverse=True)
 
@@ -157,10 +152,14 @@ def send_letters():
         c_name = donors_dict[i]['Name']+ ' ' + donors_dict[i]['Last_name']
         total_donation = sum(donors_dict[i]['Donation'])
         date = datetime.now().strftime('%m_%d_%Y')
-        file = open('./thank_you_letters/' + c_name + '_' + date + '.txt', 'w')
-        text = f"Dear {c_name}," + "\n" + f"We really appreciate your support donating to us the total amount of ${total_donation}." + "\n" + "Thank you!!"
-        file.write(text)
-    print ('Letters saved\n')
+        try:
+            file = open('./thank_you_letters/' + c_name + '_' + date + '.txt', 'w')
+            text = f"Dear {c_name}," + "\n" + f"We really appreciate your support donating to us the total amount of ${total_donation}." + "\n" + "Thank you!!"
+            file.write(text)
+        except FileNotFoundError:
+            os.mkdir('./thank_you_letters/')
+            send_letters()
+    print ('Letters saved!!\n')
 
 
 def exit_program():
