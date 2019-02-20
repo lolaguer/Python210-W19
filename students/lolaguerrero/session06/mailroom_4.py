@@ -59,17 +59,17 @@ def donation_amount(name):
     try:
         donor_amount = int(input("How much money is the donor given?: "))
 
-        if donor_amount < 0:
-            print("You can't donate negative quantities")
-            donation_amount(name)
-        else:
-            name, last_name = name.split()
-            name = name.strip()
-            last_name = last_name.strip()
-            # Changing to comprehension list
-            [v['Donation'].append(donor_amount) for v in donors_dict.values() if (name == v['Name']) and (last_name == v['Last_name'])]
-            print('Donation amount', donor_amount)
-            return donor_amount
+        # if donor_amount < 0:
+        #     print("You can't donate negative quantities")
+        #     donation_amount(name)
+        # else:
+        name, last_name = name.split()
+        name = name.strip()
+        last_name = last_name.strip()
+        # Changing to comprehension list
+        [v['Donation'].append(donor_amount) for v in donors_dict.values() if (name == v['Name']) and (last_name == v['Last_name'])]
+        print('Donation amount', donor_amount)
+        return donor_amount
     except ValueError:
         print ("That wasn't a correct amount. Try again.")
         donation_amount(name)
@@ -101,27 +101,46 @@ def select_a_donor():
         return donor_name
 
 
-def send_thank_you(name, amount):
+def send_thank_you(name=None, amount=None):
     """
     Writes a thank you note to the donor for his/her donation
     """
-
+    if name is None:
+        name = select_a_donor()
     # if name is None:
     #     return prompt
 
-    if name:
-        if amount is None:
-            amount = donation_amount(name)
-    else:
-        name = select_a_donor()
-        if amount is None:
-            amount = donation_amount(name)
-
-        print ('Amount in  the tank you note', amount)
-        print("\n")
-        print (f"Dear {name}," + "\n" + f"We really appreciate your support donating to us the amount of ${amount}." + "\n" + "Thank you!!")
-        print ("\n")
+    if amount is None:
+        amount = donation_amount(name)
+    print ('Amount in  the tank you note', amount)
+    print("\n")
+    print (f"Dear {name}," + "\n" + f"We really appreciate your support donating to us the amount of ${amount}." + "\n" + "Thank you!!")
+    print ("\n")
+    #return prompt
     return f"Dear {name}," + "\n" + f"We really appreciate your support donating to us the amount of ${amount}." + "\n" + "Thank you!!"
+
+
+# def send_thank_you(name, amount):
+#     """
+#     Writes a thank you note to the donor for his/her donation
+#     """
+#
+#     # if name is None:
+#     #     return prompt
+#
+#     if name:
+#         if amount is None:
+#             amount = donation_amount(name)
+#     else:
+#         name = select_a_donor()
+#         if amount is None:
+#             amount = donation_amount(name)
+#
+#         print ('Amount in  the tank you note', amount)
+#         print("\n")
+#         print (f"Dear {name}," + "\n" + f"We really appreciate your support donating to us the amount of ${amount}." + "\n" + "Thank you!!")
+#         print ("\n")
+#     return f"Dear {name}," + "\n" + f"We really appreciate your support donating to us the amount of ${amount}." + "\n" + "Thank you!!"
 
 
 def sort_amt(donor):
@@ -155,7 +174,7 @@ def create_report():
     t.align["Total Given"] = "r"
     t.align["Num Gifts"] = "r"
     t.align["Average Gift"] = "r"
-
+    print (t)
     return t
 
 
