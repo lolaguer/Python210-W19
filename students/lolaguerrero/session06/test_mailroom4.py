@@ -6,19 +6,19 @@
 # RRoot, 02/18/2019, Created file
 # ----------------------------------#
 
-import pytest
 from mailroom_4 import send_thank_you, create_report, send_letters
 import prettytable
 import os
 
 
-
 def test_send_thank_you():
     expected = "Dear Frank," + "\n" + "We really appreciate your support donating to us the amount of $800000." + "\n" + "Thank you!!"
-    assert send_thank_you("Frank", 800000) == expected
+    assert send_thank_you(name="Frank", amount=800000) == expected
 
 
 def test_create_report():
+    tb = create_report()
+    assert tb.field_names == ['Donor Name', 'Total Given', 'Num Gifts', 'Average Gift']
     assert type(create_report()) is prettytable.PrettyTable
 
 
