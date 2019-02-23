@@ -8,7 +8,7 @@ A class-based system for rendering html.
 # This is the framework for the base class
 class Element(object):
 
-    tag_name = "html"
+    tag = "html"
 
     def __init__(self, content=None):
         self.content = content
@@ -17,4 +17,5 @@ class Element(object):
         self.content = self.content +'.\n' + new_content + '.\n'
 
     def render(self, out_file):
-        out_file.write("<html> \n" + self.content + " </html>")
+        tag_name = {'tn' : self.tag}
+        out_file.write("<{}> \n".format(self.tag) + self.content + " </{}>".format(self.tag))
