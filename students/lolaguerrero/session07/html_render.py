@@ -19,10 +19,6 @@ class Element(object):
         self.content.append(new_content)
 
     def render(self, out_file):
-<<<<<<< HEAD
-=======
-        print ('Hello!!!')
->>>>>>> 2633fe9b4d54f7fa725643ba08745f716176741a
         out_file.write("<{}>\n".format(self.tag))
         for c in self.content:
             if type(c) == str:
