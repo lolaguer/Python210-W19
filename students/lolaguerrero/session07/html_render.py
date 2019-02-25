@@ -14,8 +14,6 @@ class Element(object):
         self.content = [content]
 
     def append(self, new_content):
-        print('content', self.content)
-        print('new content this is the class',  new_content)
         self.content.append(new_content)
 
     def render(self, out_file):
@@ -27,9 +25,7 @@ class Element(object):
                 out_file.write("<{}>\n".format(c.tag))
                 out_file.write(' '.join(c.content) + '\n')
                 out_file.write("</{}>\n".format(c.tag))
-
         out_file.write("</{}>\n".format(self.tag))
-
 
 
 class Html(Element):
@@ -40,5 +36,3 @@ class Body(Element):
 
 class P(Element):
     tag = "p"
-
-
