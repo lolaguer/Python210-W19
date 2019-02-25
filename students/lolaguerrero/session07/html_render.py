@@ -19,7 +19,6 @@ class Element(object):
         self.content.append(new_content)
 
     def render(self, out_file):
-        print ('Hello!!!')
         out_file.write("<{}>\n".format(self.tag))
         for c in self.content:
             if type(c) == str:
