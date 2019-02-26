@@ -52,20 +52,9 @@ class P(Element):
 class Head(Element):
     tag = "head"
 
-
 class OneLineTag(Element):
     def render(self, out_file):
-        out_file.write("<{}>".format(self.tag)+' PythonClass - Session 6 example'+"</{}>\n".format(self.tag))
+        out_file.write("<{}>".format(self.tag)+'PythonClass - Session 6 example'+"</{}>\n".format(self.tag))
 
-
-
-page = Html()
-body = Body()
-ff = OneLineTag()
-ff.tag = 'title'
-body.append(P("a very small paragraph"))
-body.append(P("another small paragraph"))
-page.append(Head(ff))
-page.append(body)
-with open("test.html", 'w') as outfile:
-    page.render(outfile)
+class Title(OneLineTag):
+    tag = "title"
