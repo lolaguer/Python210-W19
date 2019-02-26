@@ -4,6 +4,17 @@
 A class-based system for rendering html.
 """
 
+class TextWrapper:
+    """
+    A simple wrapper that creates a class with a render method
+    for simple text
+    """
+    def __init__(self, text):
+        self.text = text
+
+    def render(self, file_out):
+        file_out.write(self.text)
+
 
 # This is the framework for the base class
 class Element(object):
@@ -14,18 +25,21 @@ class Element(object):
         self.content = [content]
 
     def append(self, new_content):
-        self.content.append(new_content)
+        if hasattr(new_content, 'render'):
+            self.content.append(new_content)
+        else:
+            self.content.append(TextWrapper(str(new_content)))
+
 
     def render(self, out_file):
         out_file.write("<{}>\n".format(self.tag))
         for c in self.content:
-            if type(c) == str:
-                out_file.write(c + '\n')
-            else:
-                out_file.write("<{}>\n".format(c.tag))
-                out_file.write(' '.join(c.content) + '\n')
-                out_file.write("</{}>\n".format(c.tag))
+            try:
+                c.render(out_file)
+            except AttributeError:
+                out_file.write(c)
         out_file.write("</{}>\n".format(self.tag))
+
 
 
 class Html(Element):
@@ -36,3 +50,6 @@ class Body(Element):
 
 class P(Element):
     tag = "p"
+
+class Head(Element):
+    tag = "head"
