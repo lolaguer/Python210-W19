@@ -16,7 +16,6 @@ class TextWrapper:
         file_out.write(self.text)
 
 
-# This is the framework for the base class
 class Element(object):
 
     tag = "html"
@@ -29,7 +28,6 @@ class Element(object):
             self.content.append(new_content)
         else:
             self.content.append(TextWrapper(str(new_content)))
-
 
     def render(self, out_file):
         out_file.write("<{}>\n".format(self.tag))
@@ -53,3 +51,21 @@ class P(Element):
 
 class Head(Element):
     tag = "head"
+
+
+class OneLineTag(Element):
+    def render(self, out_file):
+        out_file.write("<{}>".format(self.tag)+' PythonClass - Session 6 example'+"</{}>\n".format(self.tag))
+
+
+
+page = Html()
+body = Body()
+ff = OneLineTag()
+ff.tag = 'title'
+body.append(P("a very small paragraph"))
+body.append(P("another small paragraph"))
+page.append(Head(ff))
+page.append(body)
+with open("test.html", 'w') as outfile:
+    page.render(outfile)
