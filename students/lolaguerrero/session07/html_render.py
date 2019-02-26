@@ -20,8 +20,10 @@ class Element(object):
 
     tag = "html"
 
-    def __init__(self, content=''):
+    def __init__(self, content='', **kwargs):
         self.content = [content]
+        self.attributes = ''.join([' %s == "%s"' %(key, value) for key, value in kwargs.items()])
+
 
     def append(self, new_content):
         if hasattr(new_content, 'render'):
@@ -30,7 +32,7 @@ class Element(object):
             self.content.append(TextWrapper(str(new_content)))
 
     def render(self, out_file):
-        out_file.write("<{}>\n".format(self.tag))
+        out_file.write("<{}{}>\n".format(self.tag, self.attributes))
         for c in self.content:
             try:
                 c.render(out_file)
@@ -54,7 +56,7 @@ class Head(Element):
 
 class OneLineTag(Element):
     def render(self, out_file):
-        out_file.write("<{}>".format(self.tag)+'PythonClass - Session 6 example'+"</{}>\n".format(self.tag))
+        out_file.write("<{}{}>".format(self.tag, self.attributes)+'PythonClass - Session 6 example'+"</{}>\n".format(self.tag))
 
 class Title(OneLineTag):
     tag = "title"
