@@ -56,7 +56,7 @@ class Head(Element):
 
 class OneLineTag(Element):
     def render(self, out_file):
-        out_file.write("<{}{}>".format(self.tag, self.attributes)+'PythonClass - Session 6 example'+"</{}>\n".format(self.tag))
+        out_file.write("<{}{}>".format(self.tag, self.attributes)+self.content[0]+"</{}>\n".format(self.tag))
 
 class Title(OneLineTag):
     tag = "title"
