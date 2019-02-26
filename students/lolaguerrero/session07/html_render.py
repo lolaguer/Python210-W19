@@ -60,3 +60,14 @@ class OneLineTag(Element):
 
 class Title(OneLineTag):
     tag = "title"
+
+
+class SelfClosingTag(Element):
+    def render(self, out_file):
+        out_file.write("<{} {} />\n".format(self.tag, self.attributes))
+
+class Hr(SelfClosingTag):
+    tag = 'hr'
+
+class Br(SelfClosingTag):
+    tag = 'br'
