@@ -22,7 +22,7 @@ class Element(object):
 
     def __init__(self, content='', **kwargs):
         self.content = [content]
-        self.attributes = ''.join([' %s == "%s"' %(key, value) for key, value in kwargs.items()])
+        self.attributes = ''.join([' %s = "%s"' %(key, value) for key, value in kwargs.items()])
 
     def append(self, new_content):
         if hasattr(new_content, 'render'):
@@ -72,7 +72,7 @@ class Br(SelfClosingTag):
 
 class A(Element):
     tag = 'a'
-    
+
     def __init__(self, link, content):
         self.link = link
         self.content = content
@@ -80,5 +80,20 @@ class A(Element):
     def render(self, out_file):
         anchor_dict = {'tag':self.tag, 'link':self.link, 'content': self.content}
         out_file.write('<{tag} href="{link}">{content}</{tag}>\n'.format(**anchor_dict))
+
+class Ul(Element):
+    tag = 'ul'
+
+class Li(Element):
+    tag = 'li'
+
+class H(OneLineTag):
+
+    tag = 'h'
+
+    def __init__(self, size, content, **kwargs):
+        self.size = size
+        self.tag = '{}{}'.format(self.tag, self.size)
+        super().__init__(content, **kwargs)
 
 
