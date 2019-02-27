@@ -24,7 +24,6 @@ class Element(object):
         self.content = [content]
         self.attributes = ''.join([' %s == "%s"' %(key, value) for key, value in kwargs.items()])
 
-
     def append(self, new_content):
         if hasattr(new_content, 'render'):
             self.content.append(new_content)
@@ -39,7 +38,6 @@ class Element(object):
             except AttributeError:
                 out_file.write(c)
         out_file.write("</{}>\n".format(self.tag))
-
 
 
 class Html(Element):
@@ -71,3 +69,16 @@ class Hr(SelfClosingTag):
 
 class Br(SelfClosingTag):
     tag = 'br'
+
+class A(Element):
+    tag = 'a'
+    
+    def __init__(self, link, content):
+        self.link = link
+        self.content = content
+
+    def render(self, out_file):
+        anchor_dict = {'tag':self.tag, 'link':self.link, 'content': self.content}
+        out_file.write('<{tag} href="{link}">{content}</{tag}>\n'.format(**anchor_dict))
+
+
