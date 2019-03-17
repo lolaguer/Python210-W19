@@ -328,6 +328,8 @@ class MainWindow():
                                                                                           txt_product_id.get(),
                                                                                           [mtx_inventory_counts_info])
 
+
+
 if __name__ == '__main__':
     mw = MainWindow()
     mw.window.mainloop()

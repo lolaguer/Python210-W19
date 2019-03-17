@@ -1,7 +1,3 @@
-# Desc: Python 210 Final - Data Processor
-# ChangeLog: (When,Who,What)
-# 03/14/19, Lola Guerrero, Created Script
-
 import sqlite3
 from sqlite3 import Error as sqlErr
 import re as rex
@@ -87,6 +83,7 @@ class DBProcessor(object):
                 # Validate
                 self.check_for_extra_semicolon(sql_code);
                 self.check_for_or(sql_code);
+                #self.check_for_and(sql_code);
 
                 # Connect and Run
                 with db_con:
@@ -157,12 +154,9 @@ class ProductProcessor(DBProcessor):
 
     def build_ins_code(self, product_id: int, product_name: str):
         DBProcessor.remove_multiple_spaces(product_name)
-        try:
-            sql = str.format("INSERT INTO Products (ProductID, ProductName) "
-                             "VALUES ({id},'{name}');", id=product_id, name=product_name)
-            return sql
-        except MySQLdb.Error as e:
-            if str(e) == 'UNIQUE constraint failed: Products.ProductID':
+        sql = str.format("INSERT INTO Products (ProductID, ProductName) "
+                         "VALUES ({id},'{name}');", id=product_id, name=product_name)
+        return sql
 
     def build_upd_code(self, product_id: int, product_name: str):
         DBProcessor.remove_multiple_spaces(product_name)
@@ -193,7 +187,6 @@ class InventoryCountProcessor(DBProcessor):
         return sql
 
     def build_upd_code(self, inventory_id: int, product_id: int, count: int):
-        print ('HERE')
         sql = str.format("UPDATE InventoryCounts SET Count = '{cnt}' "
                          "WHERE InventoryID = {id_inv} AND ProductID = {id_prod};", id_inv=inventory_id, id_prod=product_id, cnt=count)
         return sql
